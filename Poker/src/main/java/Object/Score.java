@@ -1,0 +1,5 @@
+package Object;
+
+public enum Score {
+	HIGHCARD, PAIR, TWOPAIR, TRIS, STRAIGHT, FLUSH, FULLHOUSE, POKER, STRAIGHTFLUSH
+}
