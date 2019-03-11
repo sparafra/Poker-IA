@@ -10,6 +10,7 @@ import java.awt.Toolkit;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -644,9 +645,12 @@ private static final int PADDING = 5;
 		    	System.out.println("click");
 		    	if(buttonP2.get(0).getText().equals("Scarta"))
 		    	{
-		    		
+		    		Collections.sort(selectedCard); 
 		    		for(int k=0; k<selectedCard.size(); k++)
 		    		{
+		    			System.out.println(selectedCard.get(k));
+		    			System.out.println(k);
+		    			
 		    			System.out.println(selectedCard.get(k)-k);
 
 		    			core.getPlayer(2).getActualHand().getCards().remove((int)selectedCard.get(k)-k);

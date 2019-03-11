@@ -36,22 +36,30 @@ public class Media {
 		Path = "";
 		try {
 			Path = new File(".").getCanonicalPath();
-			Path += "\\src\\main\\resources\\Images";
+			//Path += "\\src\\main\\resources\\Images";
+			Path += "//src//main//resources//Images";
 			System.out.println(Path);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+		/*
 		dealer = tk.getImage(Path + "\\Dealer\\dealer.png");
 		
 		LinkedList<File> FrontCards = getFiles(Path + "\\Card\\Front");
 		LinkedList<File> BackCards = getFiles(Path + "\\Card\\Back");
 		LinkedList<File> Fiches = getFiles(Path + "\\Fiches");
+		*/
+		dealer = tk.getImage(Path + "//Dealer//dealer.png");
+		
+		LinkedList<File> FrontCards = getFiles(Path + "//Card//Front");
+		LinkedList<File> BackCards = getFiles(Path + "//Card//Back");
+		LinkedList<File> Fiches = getFiles(Path + "//Fiches");
 		
 		for(int k=0; k<FrontCards.size(); k++)
 		{
-			Image i = tk.getImage(Path + "\\Card\\Front\\" + FrontCards.get(k).getName());
+			//Image i = tk.getImage(Path + "\\Card\\Front\\" + FrontCards.get(k).getName());
+			Image i = tk.getImage(Path + "//Card//Front//" + FrontCards.get(k).getName());
 			cards.put(FrontCards.get(k).getName().substring(0, FrontCards.get(k).getName().indexOf(".")), i);
 			//System.out.println(FrontCards.get(k).getName().substring(0, FrontCards.get(k).getName().indexOf(".")));
 			CardsFront.add(i);
@@ -59,12 +67,16 @@ public class Media {
 		
 		for(int k=0; k<BackCards.size(); k++)
 		{
-			Image i = tk.getImage(Path + "\\Card\\Back\\" + BackCards.get(k).getName());
+			//Image i = tk.getImage(Path + "\\Card\\Back\\" + BackCards.get(k).getName());
+			Image i = tk.getImage(Path + "//Card//Back//" + BackCards.get(k).getName());
+
 			CardsBack.add(i);
 		}
 		for(int k=0; k<Fiches.size(); k++)
 		{
-			Image i = tk.getImage(Path + "\\Fiches\\" + Fiches.get(k).getName());
+			//Image i = tk.getImage(Path + "\\Fiches\\" + Fiches.get(k).getName());
+			Image i = tk.getImage(Path + "//Fiches//" + Fiches.get(k).getName());
+
 			fiches.put(Fiches.get(k).getName().substring(0, Fiches.get(k).getName().indexOf(".")), i);
 		}
 		

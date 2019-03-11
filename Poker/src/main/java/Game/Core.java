@@ -404,11 +404,15 @@ public class Core {
 		{
 			P1.setDealer(false);
 			P2.setDealer(true);
+			P1.setMyTurn(false);
+			P2.setMyTurn(true);
 		}
 		else
 		{
 			P1.setDealer(true);
 			P2.setDealer(false);
+			P1.setMyTurn(true);
+			P2.setMyTurn(false);
 		}
 		
 		ArrayList<Card> p1Hand = new ArrayList<Card>();
@@ -426,6 +430,8 @@ public class Core {
 		
 		if(P1.isDealer())
 		{
+			System.out.println("P1 Dealer");
+
 			raise(P1, smallBlind);
 			raise(P2, bigBlind);
 			//P1.getStack().setStack(P1.getStack().getStack() - smallBlind);
@@ -433,11 +439,15 @@ public class Core {
 		}
 		else
 		{
+			System.out.println("P2 Dealer");
+			System.out.println(P2.isMyTurn());
+
 			raise(P2, smallBlind);
 			raise(P1, bigBlind);
 			//P1.getStack().setStack(P1.getStack().getStack() - bigBlind);
 			//P2.getStack().setStack(P2.getStack().getStack() - smallBlind);
 		}
+		System.out.println(pot.getPot());
 		turn = Turn.FIRSTBET;
 		
 		//pot.setPot(smallBlind+bigBlind);
