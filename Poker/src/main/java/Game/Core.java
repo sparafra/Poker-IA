@@ -2,6 +2,7 @@ package Game;
 
 import java.util.ArrayList;
 
+import DLV.AIcore;
 import Object.Card;
 import Object.Deck;
 import Object.Face;
@@ -391,6 +392,8 @@ public class Core {
 		
 		//pot.setPot(smallBlind+bigBlind);
 		
+		AIcore AI = new AIcore();
+		AI.Do(P1.getActualHand());
 		
 		
 	}

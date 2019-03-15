@@ -1,0 +1,155 @@
+
+
+card(1,1).
+card(10,1).
+card(11,1).
+card(7,2).
+card(13,1).
+
+
+%data una carta , decido di tenerla o di sostituirla
+
+hold(V,P) | nhold(V,P) :- card(V,P).
+
+
+
+%prendo tutte le possibili combinazioni di carte che danno un punteggio assegnandogli un valore incrementale per il punteggio migliore
+
+hCard(Vm,1) :- #max{V,P:card(V,P)} = Vm.
+highCard(Vm,P,1):-hCard(Vm,1) , card(Vm,P).
+couple(V,P,P1,2) :- card(V,P) , card(V,P1) , P1 != P.
+dcouple(V1,V2,P,P1,P2,P3,3) :- couple(V1,P,P1,_) , couple(V2,P2,P3,_) , V1 != V2.
+tris(V,P1,P2,P3,4) :- card(V,P1) , card(V,P2) , card(V,P3) , P1 != P2 , P1 != P3 , P2 != P3.
+straight(V1,V5,P,P1,P2,P3,P4,5):- card(V1,P) , card(V2,P1) , card(V3,P2) , card(V4,P3) , card(V5,P4) , V2 = V1+1 , V3 = V2+1 , V4 = V3+1 , V5 = V4+1. 
+flush(P,V1,V2,V3,V4,V5,6) :- card(V1,P) , card(V2,P) , card(V3,P) , card(V4,P) , card(V5,P) , V1 != V2 , V1 != V3 , V1!= V4 , V1!= V5 , V2 != V3 , V2 != V4 , V2 != V5 , V3 != V4 , V3 != V5 , V4 != V5.
+full(V1,V2,P,P1,P2,P3,P4,7):- couple(V2,P,P1,2) , tris(V1,P2,P3,P4,4) , V1 != V2.
+poker(V,P1,P2,P3,P4,8):- card(V,P1) , card(V,P2) , card(V,P3),card(V,P4) , P1 != P2 , P1 != P3, P1!= P4 , P2 != P3 , P2 != P4 , P3!= P4.
+straightf(V1,V2,P,9):- straight(V1,V2,P,P1,P2,P3,P4,5) , flush(P,_,_,_,_,_,6).
+royalF(P,10):- card(10,P) , card(11,P) , card(12,P) , card(13,P) , card(1,P).
+cardNoHolded(V,P):-nhold(V,P).
+
+
+
+%filtro il punteggio migliore che ho fatto
+
+
+pointCard(N):- highCard(_,_,1) , N=1.
+pointCard(N):- couple(_,_,_,2) , N =2.
+pointCard(N):- dcouple(_,_,_,_,_,_,3) , N =3.
+pointCard(N):- tris(_,_,_,_,4) , N = 4.
+pointCard(N):- straight(_,_,_,_,_,_,_,5) , N=5.
+pointCard(N):- flush(_,_,_,_,_,_,6) , N=6.
+pointCard(N):- full(_,_,_,_,_,_,_,7) , N=7.
+pointCard(N):- poker(_,_,_,_,_,8) , N=8.
+pointCard(N):- straightf(_,_,_,9) , N=9.
+pointCard(N):- royalF(P,10) , N=10.
+
+bestPoint(M):- #max{N:pointCard(N)} = M.
+
+
+%decido quali sono le carte utili a seconda di qual è il miglior punteggio
+
+utilityCard(V,P):-bestPoint(1) , highCard(V,P,1).  
+
+utilityCard(V,P):-bestPoint(2) , couple(V,P,P1,2).
+utilityCard(V,P1):-bestPoint(M) , couple(V,P,P1,M).
+
+utilityCard(V1,P):-bestPoint(M) , dcouple(V1,V2,P,P1,P2,P3,M).
+utilityCard(V1,P1):-bestPoint(M) , dcouple(V1,V2,P,P1,P2,P3,M).
+utilityCard(V2,P2):-bestPoint(M) , dcouple(V1,V2,P,P1,P2,P3,M).
+utilityCard(V2,P3):-bestPoint(M) , dcouple(V1,V2,P,P1,P2,P3,M).
+
+utilityCard(V,P1):-bestPoint(M) , tris(V,P1,P2,P3,M).
+utilityCard(V,P2):-bestPoint(M) , tris(V,P1,P2,P3,M).
+utilityCard(V,P3):-bestPoint(M) , tris(V,P1,P2,P3,M).
+
+utilityCard(V1,P):-bestPoint(M)  ,straight(V1,V5,P,P1,P2,P3,P4,5).
+utilityCard(V1+1,P1):-bestPoint(M)  ,straight(V1,V5,P,P1,P2,P3,P4,5).
+utilityCard(V1+2,P2):-bestPoint(M)  , straight(V1,V5,P,P1,P2,P3,P4,5).
+utilityCard(V1+3,P3):-bestPoint(M)  ,straight(V1,V5,P,P1,P2,P3,P4,5).
+utilityCard(V1+4,P4):-bestPoint(M)  , straight(V1,V5,P,P1,P2,P3,P4,5).
+
+utilityCard(V1,P):-bestPoint(M)  , full(V1,V2,P,P1,P2,P3,P4,M).
+utilityCard(V1,P1):-bestPoint(M)  , full(V1,V2,P,P1,P2,P3,P4,M).
+utilityCard(V1,P2):-bestPoint(M)  , full(V1,V2,P,P1,P2,P3,P4,M).
+utilityCard(V2,P3):-bestPoint(M)  , full(V1,V2,P,P1,P2,P3,P4,M).
+utilityCard(V2,P4):-bestPoint(M)  , full(V1,V2,P,P1,P2,P3,P4,M).
+
+utilityCard(V1,P):-bestPoint(M)  , flush(P,V1,V2,V3,V4,V5,M).
+utilityCard(V2,P):-bestPoint(M)  , flush(P,V1,V2,V3,V4,V5,M).
+utilityCard(V3,P):-bestPoint(M)  , flush(P,V1,V2,V3,V4,V5,M).
+utilityCard(V4,P):-bestPoint(M)  , flush(P,V1,V2,V3,V4,V5,M).
+utilityCard(V5,P):-bestPoint(M)  , flush(P,V1,V2,V3,V4,V5,M).
+
+ utilityCard(V,P):-bestPoint(M)  , poker(V,P,P1,P2,P3,M).
+utilityCard(V,P1):-bestPoint(M)  , poker(V,P,P1,P2,P3,M).
+utilityCard(V,P2):-bestPoint(M)  , poker(V,P,P1,P2,P3,M).
+utilityCard(V,P3):-bestPoint(M)  , poker(V,P,P1,P2,P3,M).
+
+utilityCard(V1,P):-bestPoint(M)  , fstraightf(V1,V2,P,M).
+utilityCard(V1+1,P):-bestPoint(M)  , fstraightf(V1,V2,P,M).
+utilityCard(V1+2,P):-bestPoint(M)  , fstraightf(V1,V2,P,M).
+utilityCard(V1+3,P):-bestPoint(M)  , fstraightf(V1,V2,P,M).
+utilityCard(V1+4,P):-bestPoint(M)  , fstraightf(V1,V2,P,M).
+
+ utilityCard(10,P):-bestPoint(M) ,royalF(P,M).
+ utilityCard(11,P):-bestPoint(M) ,royalF(P,M).
+ utilityCard(12,P):-bestPoint(M) ,royalF(P,M).
+ utilityCard(13,P):-bestPoint(M) ,royalF(P,M).
+ utilityCard(1,P):-bestPoint(M) ,royalF(P,M).
+
+%se una carta è una carta utile non può essere sostituita invece se è una carta non utile viene cambiata
+
+
+:-utilityCard(V,P) , cardNoHolded(V,P).
+:- card(V,P) ,  not utilityCard(V,P) ,  not cardNoHolded(V,P).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

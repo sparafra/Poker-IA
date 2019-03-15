@@ -12,7 +12,7 @@ public class Pot {
 	}
 
 	public float getPot() {
-		return pot;
+		return pot + bet;
 	}
 
 	public void setPot(float pot) {
