@@ -30,19 +30,19 @@ public class AIcore {
 	public AIcore()
 	{
 		handler = new DesktopHandler(new DLV2DesktopService("lib/dlv2"));
+		encoding= new ASPInputProgram();
 		/*
-        encoding= new ASPInputProgram();
- 	    encoding.addFilesPath(encodingResourceDiscardCard);
+        encodingChooseMoves = new ASPInputProgram();
+ 	    encodingChooseMoves.addFilesPath(encodingResourceChooseMoves);
         handler.addProgram(encoding);
         */
 	}
 	
 	public Decision getFinalDecision(Hand h, Stack s, Pot p, cardChanged cc)
 	{
-		encoding= new ASPInputProgram();
+		
  	    encoding.addFilesPath(encodingResourceChooseMoves);
         handler.addProgram(encoding);
-		
 		Decision d = null;
 		
 		InputProgram facts= new ASPInputProgram();
@@ -119,7 +119,6 @@ public class AIcore {
 		  			} 
 		  			
 		  		}
-		  		return d;
 	  		}
 	  		else
 	  		{
@@ -134,16 +133,16 @@ public class AIcore {
 				*/
 	  		}
 
-   	  
 	  		handler.removeProgram(facts);
-	  		return null;
+	  		encoding.clearFilesPaths();
+	  		
+	  		return d;
 		
 		
 	}
 	
 	public ArrayList<Card> getCardToDiscard(Hand h)
 	{
-		encoding= new ASPInputProgram();
  	    encoding.addFilesPath(encodingResourceDiscardCard);
         handler.addProgram(encoding);
 		
@@ -214,7 +213,6 @@ public class AIcore {
 		  			} 
 		  			
 		  		}
-		  		return array;
 	  		}
 	  		else
 	  		{
@@ -231,7 +229,8 @@ public class AIcore {
 
    	  
 	  		handler.removeProgram(facts);
-	  		return null;
+	  		encoding.clearFilesPaths();
+	  		return array;
 	}
 	
 }

@@ -87,15 +87,17 @@ private static final int PADDING = 5;
 		
 		if(core.P1.isMyTurn())
 		{
-			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
-			
-			DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
-			
+			if(core.getCardChanged())
+				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+			else
+				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
 		}
 	}
 	
 	public void DoMovesAI(Decision d)
 	{
+		System.out.println("Do AI MOVES");
 		if(d.getMossa() == 0)
 		{
 			core.fold(P1);
@@ -114,7 +116,7 @@ private static final int PADDING = 5;
 	    	{
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 	           
-				System.out.println(core.getWinner().getName() + " Winner ");
+				System.out.println("Giocatore Winner ");
 	    		System.out.println("Reset");
 	    		core.reset();
 	    		updateText();
@@ -122,6 +124,14 @@ private static final int PADDING = 5;
 	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
 	    		initEHCard();
 	    		initEHButton();
+	    		if(core.P1.isMyTurn())
+	    		{
+	    			if(core.getCardChanged())
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+	    			else
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+	    		}
 	    	}
 		}
 		else if(d.getMossa() == 1)
@@ -159,6 +169,14 @@ private static final int PADDING = 5;
 	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
 	    		initEHCard();
 	    		initEHButton();
+	    		if(core.P1.isMyTurn())
+	    		{
+	    			if(core.getCardChanged())
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+	    			else
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+	    		}
 	    	}
 		}
 		else if(d.getMossa() == 2)
@@ -196,6 +214,14 @@ private static final int PADDING = 5;
 	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
 	    		initEHCard();
 	    		initEHButton();
+	    		if(core.P1.isMyTurn())
+	    		{
+	    			if(core.getCardChanged())
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+	    			else
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+	    		}
 	    	}
 		}
 		else if(d.getMossa() == 3)
@@ -210,9 +236,10 @@ private static final int PADDING = 5;
 	        		if(!core.raise(P1, bet))
 			            JOptionPane.showMessageDialog(null, "Il tuo stack è inferiore alla tua puntata", "Error", JOptionPane.INFORMATION_MESSAGE);
 	        		else
-		    			buttonP2.get(0).setText("Call");
+	        		{
+		    			buttonP2.get(0).setText("Call " + core.getPot().getBet());
 
-	        	
+	        		}
 	        	}
 	    		updateText();
 	    		if(core.getFineHand())
@@ -226,6 +253,14 @@ private static final int PADDING = 5;
 		    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
 		    		initEHCard();
 		    		initEHButton();
+		    		if(core.P1.isMyTurn())
+		    		{
+		    			if(core.getCardChanged())
+		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+		    			else
+		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+		    		}
 		    	}
 	    	}
 		}
@@ -942,7 +977,7 @@ private static final int PADDING = 5;
 		    	{
 		            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 		           
-	    			System.out.println(core.getWinner().getName() + " Winner ");
+	    			System.out.println("AI Winner ");
 		    		System.out.println("Reset");
 		    		core.reset();
 		    		updateText();
