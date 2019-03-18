@@ -2,7 +2,11 @@ package Game;
 
 import java.util.ArrayList;
 
+import javax.swing.JOptionPane;
+
 import DLV.AIcore;
+import DLV.Decision;
+import DLV.cardChanged;
 import Object.Card;
 import Object.Deck;
 import Object.Face;
@@ -24,6 +28,8 @@ public class Core {
 	Turn turn;
 	boolean fineHand;
 	boolean firstCall;
+	boolean cardChanged;
+	AIcore AI;
 	
 	public Core(Player P1, Player P2)
 	{
@@ -33,6 +39,7 @@ public class Core {
 		deck = null;
 		fineHand=false;
 		firstCall = true;
+		cardChanged = false;
 		turn = Turn.FIRSTBET;
 	}
 	public void shuffleDeck()
@@ -101,30 +108,30 @@ public class Core {
 		{
 			if(P1.getActualHand().getScore() == Score.HIGHCARD)
 			{
-				Face F1 = P1.getActualHand().highCard();
-				Face F2 = P2.getActualHand().highCard();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().highCard();
+				int F2 = P2.getActualHand().highCard();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
 			}
 			else if(P1.getActualHand().getScore() == Score.PAIR)
 			{
-				Face F1 = P1.getActualHand().pair();
-				Face F2 = P2.getActualHand().pair();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().pair();
+				int F2 = P2.getActualHand().pair();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
 			}
 			else if(P1.getActualHand().getScore() == Score.TWOPAIR)
 			{
-				ArrayList<Face> F1 = P1.getActualHand().twoPair();
-				ArrayList<Face> F2 = P2.getActualHand().twoPair();
+				ArrayList<Integer> F1 = P1.getActualHand().twoPair();
+				ArrayList<Integer> F2 = P2.getActualHand().twoPair();
 				
-				if(F1.get(0).ordinal() > F2.get(0).ordinal() && F1.get(0).ordinal() > F2.get(1).ordinal() || F1.get(1).ordinal() > F2.get(0).ordinal() && F1.get(1).ordinal() > F2.get(1).ordinal())
+				if(F1.get(0) > F2.get(0) && F1.get(0) > F2.get(1) || F1.get(1) > F2.get(0) && F1.get(1) > F2.get(1))
 					return P1;
-				else if(F1.get(0).ordinal() == F2.get(0).ordinal() && F1.get(1).ordinal() == F2.get(1).ordinal())
+				else if(F1.get(0) == F2.get(0) && F1.get(1) == F2.get(1))
 					return null;
 				else
 					return P2;
@@ -132,41 +139,41 @@ public class Core {
 			}
 			else if(P1.getActualHand().getScore() == Score.TRIS)
 			{
-				Face F1 = P1.getActualHand().tris();
-				Face F2 = P2.getActualHand().tris();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().tris();
+				int F2 = P2.getActualHand().tris();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
 			}
 			else if(P1.getActualHand().getScore() == Score.STRAIGHT)
 			{
-				Face F1 = P1.getActualHand().straight();
-				Face F2 = P2.getActualHand().straight();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().straight();
+				int F2 = P2.getActualHand().straight();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
 			}
 			else if(P1.getActualHand().getScore() == Score.FLUSH)
 			{
-				Face F1 = P1.getActualHand().flush();
-				Face F2 = P2.getActualHand().flush();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().flush();
+				int F2 = P2.getActualHand().flush();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
 			}
 			else if(P1.getActualHand().getScore() == Score.FULLHOUSE)
 			{
-				ArrayList<Face> F1 = P1.getActualHand().twoPair();
-				ArrayList<Face> F2 = P2.getActualHand().twoPair();
+				ArrayList<Integer> F1 = P1.getActualHand().twoPair();
+				ArrayList<Integer> F2 = P2.getActualHand().twoPair();
 				
-				if(F1.get(0).ordinal() > F2.get(0).ordinal())
+				if(F1.get(0) > F2.get(0))
 					return P1;
-				else if(F1.get(0).ordinal() == F2.get(0).ordinal())
+				else if(F1.get(0) == F2.get(0))
 				{
-					if(F1.get(1).ordinal() > F2.get(1).ordinal())
+					if(F1.get(1) > F2.get(1))
 						return P1;
 					else
 						return P2;
@@ -177,18 +184,18 @@ public class Core {
 			}
 			else if(P1.getActualHand().getScore() == Score.POKER)
 			{
-				Face F1 = P1.getActualHand().poker();
-				Face F2 = P2.getActualHand().poker();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().poker();
+				int F2 = P2.getActualHand().poker();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
 			}
 			else if(P1.getActualHand().getScore() == Score.STRAIGHTFLUSH)
 			{
-				Face F1 = P1.getActualHand().straightFlush();
-				Face F2 = P2.getActualHand().straightFlush();
-				if(F1.ordinal() > F2.ordinal())
+				int F1 = P1.getActualHand().straightFlush();
+				int F2 = P2.getActualHand().straightFlush();
+				if(F1 > F2)
 					return P1;
 				else
 					return P2;
@@ -215,6 +222,7 @@ public class Core {
 				turn = turn.next();
 			else
 				firstCall = false;
+			
 			if(turn == Turn.SHOWDOWN)
 			{
 				turn = Turn.FIRSTBET;
@@ -242,6 +250,7 @@ public class Core {
 				turn = turn.next();
 			else
 				firstCall = false;
+			
 			if(turn == Turn.SHOWDOWN)
 			{
 				turn = Turn.FIRSTBET;
@@ -266,6 +275,9 @@ public class Core {
 		{
 			if(P1.getStack().getStack() >= bet)
 			{
+				if(firstCall)
+					firstCall = false;
+				
 				if(pot.getBet() > 0)
 	    		{
 	    			P1.getStack().takeByStack(pot.getBet());
@@ -278,6 +290,7 @@ public class Core {
 	    			P1.getStack().takeByStack(bet);
 	    			pot.setBet(bet);
 	    		}
+				
 				P2.setMyTurn(true);
 				P1.setMyTurn(false);
 				return true;
@@ -290,6 +303,9 @@ public class Core {
 		{
 			if(P2.getStack().getStack() >= bet)
 			{
+				if(firstCall)
+					firstCall = false;
+				
 				if(pot.getBet() > 0)
 	    		{
 	    			P2.getStack().takeByStack(pot.getBet());
@@ -389,11 +405,15 @@ public class Core {
 			//P2.getStack().setStack(P2.getStack().getStack() - smallBlind);
 		}
 		turn = Turn.FIRSTBET;
-		
+		firstCall = true;
 		//pot.setPot(smallBlind+bigBlind);
 		
-		AIcore AI = new AIcore();
-		AI.Do(P1.getActualHand());
+		AI = new AIcore();
+		//Decision d = AI.getFinalDecision(P1.getActualHand(), P1.getStack(), pot, new cardChanged(0));
+		//System.out.println(d.toString());
+		//AI.Do(P1.getActualHand());
+		
+		
 		
 		
 	}
@@ -452,8 +472,17 @@ public class Core {
 		}
 		System.out.println(pot.getPot());
 		turn = Turn.FIRSTBET;
-		
+		firstCall = true;
+
 		//pot.setPot(smallBlind+bigBlind);
+	}
+	
+	public AIcore getAIcore() {return AI;}
+	public boolean getCardChanged() {
+		return cardChanged;
+	}
+	public void setCardChanged(boolean cardChanged) {
+		this.cardChanged = cardChanged;
 	}
 	
 }

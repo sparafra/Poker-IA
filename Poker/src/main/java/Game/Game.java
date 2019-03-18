@@ -23,6 +23,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
+import DLV.Decision;
+import DLV.cardChanged;
 import Object.Card;
 import Object.Player;
 import Object.Turn;
@@ -82,6 +84,152 @@ private static final int PADDING = 5;
 		core.newGame(1500, 50, 100);
 		
 		drawPlayerCard(P1, P2);
+		
+		if(core.P1.isMyTurn())
+		{
+			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
+			
+			DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+			
+		}
+	}
+	
+	public void DoMovesAI(Decision d)
+	{
+		if(d.getMossa() == 0)
+		{
+			core.fold(P1);
+			if(core.getTurn() == core.getTurn().DISCARDCARD)
+    		{
+    			core.setCardChanged(true);
+    			buttonP2.get(0).setText("Scarta");
+    			buttonP2.get(1).setEnabled(false);
+    			buttonP2.get(2).setEnabled(false);
+    			JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
+    			//JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
+    		}
+    		
+    		updateText();
+	    	if(core.getFineHand())
+	    	{
+	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+	           
+				System.out.println(core.getWinner().getName() + " Winner ");
+	    		System.out.println("Reset");
+	    		core.reset();
+	    		updateText();
+	    		initGUI();
+	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
+	    		initEHCard();
+	    		initEHButton();
+	    	}
+		}
+		else if(d.getMossa() == 1)
+		{
+			//Check/Call
+	    	System.out.println("click");
+	    	if(core.getPlayer(1).isMyTurn())
+	    	{
+	    		System.out.println("my turn");
+	    		if(core.getPot().getBet() == 0)
+	        	{
+	        		//check
+	        		core.check(P1);
+	        	}
+	    		
+	    		if(core.getTurn() == core.getTurn().DISCARDCARD)
+	    		{
+	    			core.setCardChanged(true);
+	    			buttonP2.get(0).setText("Scarta");
+	    			buttonP2.get(1).setEnabled(false);
+	    			buttonP2.get(2).setEnabled(false);
+	    			JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
+	    			//JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
+	    		}
+	    		
+	    		updateText();
+	    	}
+	    	if(core.getFineHand())
+	    	{
+	            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+	    		System.out.println(core.getWinner().getName() + " Winner ");
+	    		System.out.println("Reset");
+	    		core.reset();
+	    		initGUI();
+	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
+	    		initEHCard();
+	    		initEHButton();
+	    	}
+		}
+		else if(d.getMossa() == 2)
+		{
+			//Check/Call
+	    	System.out.println("click");
+	    	if(core.getPlayer(1).isMyTurn())
+	    	{
+	    		System.out.println("my turn");
+	    		if(core.getPot().getBet() > 0 && core.getPot().getBet() == d.getBet())
+	        	{
+	        		//check
+	        		core.call(P1);
+	        	}
+	    		
+	    		if(core.getTurn() == core.getTurn().DISCARDCARD)
+	    		{
+	    			core.setCardChanged(true);
+	    			buttonP2.get(0).setText("Scarta");
+	    			buttonP2.get(1).setEnabled(false);
+	    			buttonP2.get(2).setEnabled(false);
+	    			JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
+	    			//JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
+	    		}
+	    		
+	    		updateText();
+	    	}
+	    	if(core.getFineHand())
+	    	{
+	            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+	    		System.out.println(core.getWinner().getName() + " Winner ");
+	    		System.out.println("Reset");
+	    		core.reset();
+	    		initGUI();
+	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
+	    		initEHCard();
+	    		initEHButton();
+	    	}
+		}
+		else if(d.getMossa() == 3)
+		{
+			if(core.getPlayer(1).isMyTurn())
+	    	{
+	    		System.out.println("my turn");
+	    		float bet = Float.parseFloat(betValue.getValue().toString());
+	    		if(bet > 0)
+	        	{
+	        		//call
+	        		if(!core.raise(P1, bet))
+			            JOptionPane.showMessageDialog(null, "Il tuo stack è inferiore alla tua puntata", "Error", JOptionPane.INFORMATION_MESSAGE);
+	        		else
+		    			buttonP2.get(0).setText("Call");
+
+	        	
+	        	}
+	    		updateText();
+	    		if(core.getFineHand())
+		    	{
+		            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+		           
+	    			System.out.println(core.getWinner().getName() + " Winner ");
+		    		System.out.println("Reset");
+		    		core.reset();
+		    		initGUI();
+		    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
+		    		initEHCard();
+		    		initEHButton();
+		    	}
+	    	}
+		}
+		
 	}
 	
 	public void drawPlayerCard(Player P1, Player P2)
@@ -115,7 +263,7 @@ private static final int PADDING = 5;
 			obj = new JLabel();
 			obj.setName("Card"+k);
 			obj.setSize(50, 60);
-			System.out.println(core.getPlayer(1).getActualHand().getCards().get(k).toString());
+			//System.out.println(core.getPlayer(1).getActualHand().getCards().get(k).toString());
 
 			//System.out.println(M.getCard(core.getPlayer(1).getActualHand().getCards().get(k).toString()));
 			img = M.getCard(core.getPlayer(1).getActualHand().getCards().get(k).toString());
@@ -208,7 +356,7 @@ private static final int PADDING = 5;
 		{
 			obj = new JLabel();
 			obj.setSize(50, 60);
-			System.out.println(core.getPlayer(2).getActualHand().getCards().get(k).toString());
+			//System.out.println(core.getPlayer(2).getActualHand().getCards().get(k).toString());
 
 			//System.out.println(M.getCard(core.getPlayer(1).getActualHand().getCards().get(k).toString()));
 			img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(k).toString());
@@ -233,7 +381,7 @@ private static final int PADDING = 5;
 		else if(core.getPlayer(2).getStack().getStack() >= HIGH)
 		{
 			img = M.getFiches("HIGH");
-			System.out.println(img);
+			//System.out.println(img);
 		}
 		img = img.getScaledInstance(180, 100, Image.SCALE_SMOOTH);
 		imgI = new ImageIcon(img);
@@ -300,24 +448,24 @@ private static final int PADDING = 5;
 		obj.setName("PotImage");
 		obj.setSize(50, 100);
 		img = null;
-		System.out.println("start");
+		//System.out.println("start");
 		if(core.getPot().getPot() > 0 && core.getPot().getPot() <= LOW)
 		{
 			img = M.getFiches("LOW");
 			img = img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
-			System.out.println("Low");
+			//System.out.println("Low");
 		}
 		else if(core.getPot().getPot() >= LOW && core.getPot().getPot() <= MIDDLE)
 		{
 			img = M.getFiches("MIDDLE");
 			img = img.getScaledInstance(130, 100, Image.SCALE_SMOOTH);
-			System.out.println("Middle");
+			//System.out.println("Middle");
 		}
 		else if(core.getPot().getPot() >= MIDDLE)
 		{
 			img = M.getFiches("HIGH");
 			img = img.getScaledInstance(180, 100, Image.SCALE_SMOOTH);
-			System.out.println("High");
+			//System.out.println("High");
 		}
 		else if(core.getPot().getPot() == (core.getBigBlind() + core.getSmallBlind()))
 		{
@@ -325,7 +473,7 @@ private static final int PADDING = 5;
 			img = img.getScaledInstance(100, 50, Image.SCALE_SMOOTH);
 		}
 		
-		System.out.println(core.getPot().getPot());
+		//System.out.println(core.getPot().getPot());
 		imgI = new ImageIcon(img);
 		obj.setIcon(imgI);
 		Center.add(obj);
@@ -648,22 +796,40 @@ private static final int PADDING = 5;
 		    		Collections.sort(selectedCard); 
 		    		for(int k=0; k<selectedCard.size(); k++)
 		    		{
-		    			System.out.println(selectedCard.get(k));
-		    			System.out.println(k);
+		    			//System.out.println(selectedCard.get(k));
+		    			//System.out.println(k);
 		    			
-		    			System.out.println(selectedCard.get(k)-k);
+		    			//System.out.println(selectedCard.get(k)-k);
 
 		    			core.getPlayer(2).getActualHand().getCards().remove((int)selectedCard.get(k)-k);
 		    		}
 		    		drawCard(core.getPlayer(2), selectedCard.size());
+		    		selectedCard.clear();
 		    		
 		    		//AI SCARTA LE SUE CARTE
+		    		ArrayList<Card> cardToDiscard = core.getAIcore().getCardToDiscard(core.getPlayer(1).getActualHand());
+		    		for(int k=0; k<cardToDiscard.size(); k++)
+		    		{
+		    			core.getPlayer(1).getActualHand().getCards().remove(cardToDiscard.get(k));
+		    		}
+		    		drawCard(core.getPlayer(1), cardToDiscard.size());
+
 		    		
 		    		core.nextTurn();
 		    		
 		    		initGUI();
 		    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
 		    		initEHButton();
+		    		
+		    		if(core.P1.isMyTurn() && core.getTurn() != core.getTurn().DISCARDCARD )
+		    		{
+		    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
+		    			if(core.getCardChanged())
+		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+		    			else
+		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+		    		}
 		    	}
 		    	else
 		    	{
@@ -674,7 +840,8 @@ private static final int PADDING = 5;
 			        	{
 			        		//call
 			        		core.call(P2);
-			        	
+			    			buttonP2.get(0).setText("Check");
+			    			System.out.println(core.getTurn());
 			        	}
 			        	else
 			        	{
@@ -683,12 +850,14 @@ private static final int PADDING = 5;
 			        	}
 			    		if(core.getTurn() == core.getTurn().DISCARDCARD)
 			    		{
+			    			core.setCardChanged(true);
 			    			buttonP2.get(0).setText("Scarta");
 			    			buttonP2.get(1).setEnabled(false);
 			    			buttonP2.get(2).setEnabled(false);
 			    			JOptionPane.showMessageDialog(null, "Seleziona le carte da scartare", "Scarta le carte ", JOptionPane.INFORMATION_MESSAGE);
 			    		}
 			    		updateText();
+			    		
 			    		
 			    		if(core.getFineHand())
 				    	{
@@ -702,6 +871,16 @@ private static final int PADDING = 5;
 				    		initEHCard();
 				    		initEHButton();
 				    	}
+			    		
+			    		if(core.P1.isMyTurn() && core.getTurn() != core.getTurn().DISCARDCARD && !core.getFineHand())
+			    		{
+			    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
+			    			if(core.getCardChanged())
+			    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+			    			else
+			    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+			    		}
 			    	}
 		    	}
 		    }  
@@ -738,6 +917,15 @@ private static final int PADDING = 5;
 			    		initEHCard();
 			    		initEHButton();
 			    	}
+		    		if(core.P1.isMyTurn() && !core.getFineHand())
+		    		{
+		    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
+		    			if(core.getCardChanged())
+		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+		    			else
+		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+		    		}
 		    	}
 
 		        
@@ -763,6 +951,15 @@ private static final int PADDING = 5;
 		    		initEHCard();
 		    		initEHButton();
 		    	}
+		    	if(core.P1.isMyTurn())
+	    		{
+	    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
+	    			if(core.getCardChanged())
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
+	    			else
+	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0)));
+
+	    		}
 		        
 		    }  
 		}); 
@@ -802,7 +999,7 @@ private static final int PADDING = 5;
 		for (Component jc : Nord.getComponents()) {
             if (jc instanceof JLabel) {
                 JLabel label = (JLabel) jc;
-                System.out.println(label.getName());
+                //System.out.println(label.getName());
                 if(label.getName().equals("StackValueP1"))
                 {
                 	
@@ -813,7 +1010,7 @@ private static final int PADDING = 5;
 		for (Component jc : Center.getComponents()) {
             if (jc instanceof JLabel) {
                 JLabel label = (JLabel) jc;
-                System.out.println(label.getName());
+                //System.out.println(label.getName());
                 if(label.getName().equals("Pot"))
                 {
                 	label.setText(String.valueOf(core.getPot().getPot() + core.getPot().getBet()));
@@ -824,7 +1021,7 @@ private static final int PADDING = 5;
 		for (Component jc : South.getComponents()) {
             if (jc instanceof JLabel) {
                 JLabel label = (JLabel) jc;
-                System.out.println(label.getName());
+                //System.out.println(label.getName());
                 if(label.getName().equals("StackValueP2"))
                 {
                 	label.setText(String.valueOf(core.getPlayer(2).getStack().getStack()));
