@@ -209,13 +209,38 @@ public class Core {
 		}
 	}
 	
+	public Player getGameWinner()
+	{
+		if(P1.getStack().getStack() == 0)
+			return P2;
+		else if(P2.getStack().getStack() == 0)
+			return P1;
+		else 
+			return null;
+			
+		
+	}
 	public void call(Player P)
 	{
 		if(P == P1 && P1.isMyTurn())
 		{
-			P1.getStack().takeByStack(pot.getBet());
-			pot.add(pot.getBet()*2);
-			pot.setBet(0);
+			//MODIFICHE BACKUP SOLO ALL'INTERNO DELL ELSE
+
+			if(P1.getStack().getStack() < pot.getBet())
+			{
+				P2.getStack().setStack((pot.getBet() - P1.getStack().getStack()));
+				pot.setBet(pot.getBet() - P1.getStack().getStack());
+				P1.getStack().takeByStack(pot.getBet());
+				pot.add(pot.getBet()*2);
+				pot.setBet(0);
+				
+			}
+			else
+			{
+				P1.getStack().takeByStack(pot.getBet());
+				pot.add(pot.getBet()*2);
+				pot.setBet(0);
+			}
 			P1.setMyTurn(false);
 			P2.setMyTurn(true);
 			if(!firstCall)
@@ -241,9 +266,22 @@ public class Core {
 		}
 		else if(P == P2 && P2.isMyTurn())
 		{
-			P2.getStack().takeByStack(pot.getBet());
-			pot.add(pot.getBet()*2);
-			pot.setBet(0);
+			//MODIFICHE BACKUP SOLO ALL'INTERNO DELL ELSE
+			if(P2.getStack().getStack() < pot.getBet())
+			{
+				
+				P1.getStack().setStack((pot.getBet() - P2.getStack().getStack()));
+				pot.setBet(pot.getBet() - P1.getStack().getStack());
+				P2.getStack().takeByStack(pot.getBet());
+				pot.add(pot.getBet()*2);
+				pot.setBet(0);
+			}
+			else
+			{
+				P2.getStack().takeByStack(pot.getBet());
+				pot.add(pot.getBet()*2);
+				pot.setBet(0);
+			}
 			P1.setMyTurn(true);
 			P2.setMyTurn(false);
 			if(!firstCall)
