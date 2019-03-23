@@ -66,7 +66,7 @@ public class AIcore {
 			e.printStackTrace();
 		}
 		handler.addProgram(facts);
-  	   	System.out.println("Fact");
+  	   	System.out.println("Fact: ");
 
   	   	System.out.println(facts.getPrograms());
   	   	
@@ -88,13 +88,13 @@ public class AIcore {
 //   	    System.out.println("HO STARTATO");
    	    
 	  		AnswerSets answers = (AnswerSets) o;
-	  		System.out.println("ansersets");
-	  		System.out.println(answers.getAnswersets().size());
+	  		//System.out.println("ansersets");
+	  		//System.out.println(answers.getAnswersets().size());
 	  		if (answers.getAnswersets().size() != 0)
 	  		{
 		  		for(AnswerSet a:answers.getAnswersets()){
-		  			System.out.println("weight");
-		  			System.out.println(a.getWeights());
+		  			//System.out.println("weight");
+		  			//System.out.println(a.getWeights());
 		  			System.out.println(a.toString());
 		  			try {
 		  				for(Object obj:a.getAtoms()){
@@ -105,7 +105,7 @@ public class AIcore {
 		  					
 		  					//gipfBoardComponent.game.applyMove(((Mossa) obj).getMove());
 		  					
-		  					System.out.println("MOSSA APPLICATA");
+		  					//System.out.println("MOSSA APPLICATA");
 		  					d = new Decision();
 		  					d.setMossa(((Decision)obj).getMossa());
 		  					d.setBet(((Decision)obj).getBet());
@@ -182,13 +182,13 @@ public class AIcore {
 //   	    System.out.println("HO STARTATO");
    	    
 	  		AnswerSets answers = (AnswerSets) o;
-	  		System.out.println("ansersets");
-	  		System.out.println(answers.getAnswersets().size());
+	  		//System.out.println("answersets");
+	  		//System.out.println(answers.getAnswersets().size());
 	  		if (answers.getAnswersets().size() != 0)
 	  		{
 		  		for(AnswerSet a:answers.getAnswersets()){
-		  			System.out.println("weight");
-		  			System.out.println(a.getWeights());
+		  			//System.out.println("weight");
+		  			//System.out.println(a.getWeights());
 		  			System.out.println(a.toString());
 		  			try {
 		  				for(Object obj:a.getAtoms()){
@@ -199,14 +199,14 @@ public class AIcore {
 		  					
 		  					//gipfBoardComponent.game.applyMove(((Mossa) obj).getMove());
 		  					
-		  					System.out.println("MOSSA APPLICATA");
+		  					//System.out.println("MOSSA APPLICATA");
 		  					Card c = new Card();
 		  					c.setF(((NoHoldCard)obj).getF());
 		  					c.setS(((NoHoldCard)obj).getS().replaceAll("\"", ""));
 		  					array.add(c);
-		  					System.out.println(c.toString());
+		  					//System.out.println(c.toString());
 		  					System.out.println(((NoHoldCard)obj).toString());
-		  					//break;
+		  					break;
 		  				}
 		  			} catch (Exception e) {
 		  				e.printStackTrace();

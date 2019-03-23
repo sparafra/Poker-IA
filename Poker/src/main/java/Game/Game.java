@@ -87,6 +87,16 @@ private static final int PADDING = 5;
 		
 		if(core.P1.isMyTurn())
 		{
+			if(core.getPlayer(1).isMyTurn())
+			{
+				Nord.setBackground(Color.green);
+				South.setBackground(Color.red);
+			}
+			else
+			{
+				Nord.setBackground(Color.red);
+				South.setBackground(Color.green);
+			}
 			if(core.getCardChanged())
 				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
 			else
@@ -97,10 +107,21 @@ private static final int PADDING = 5;
 	
 	public void DoMovesAI(Decision d)
 	{
-		System.out.println("Do AI MOVES");
+		
+		
+		
+		try {
+			Thread.sleep(2000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		System.out.println("Do AI MOVES: ");
+		
 		if(d.getMossa() == 0)
 		{
 			core.fold(P1);
+			System.out.println("AI FOLD");
 			if(core.getTurn() == core.getTurn().DISCARDCARD)
     		{
     			core.setCardChanged(true);
@@ -112,6 +133,8 @@ private static final int PADDING = 5;
     		}
     		
     		updateText();
+    		
+			
 	    	if(core.getFineHand())
 	    	{
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
@@ -126,6 +149,7 @@ private static final int PADDING = 5;
 	    		initEHButton();
 	    		if(core.P1.isMyTurn())
 	    		{
+	    			
 	    			if(core.getCardChanged())
 	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
 	    			else
@@ -133,18 +157,29 @@ private static final int PADDING = 5;
 
 	    		}
 	    	}
+	    	if(core.getPlayer(1).isMyTurn())
+			{
+				Nord.setBackground(Color.green);
+				South.setBackground(Color.red);
+			}
+			else
+			{
+				Nord.setBackground(Color.red);
+				South.setBackground(Color.green);
+			}
 		}
 		else if(d.getMossa() == 1)
 		{
 			//Check/Call
-	    	System.out.println("click");
 	    	if(core.getPlayer(1).isMyTurn())
 	    	{
-	    		System.out.println("my turn");
+	    		//System.out.println("my turn");
 	    		if(core.getPot().getBet() == 0)
 	        	{
 	        		//check
 	        		core.check(P1);
+	    			System.out.println("AI CHECK");
+
 	        	}
 	    		
 	    		if(core.getTurn() == core.getTurn().DISCARDCARD)
@@ -161,7 +196,7 @@ private static final int PADDING = 5;
 	    	}
 	    	if(core.getFineHand())
 	    	{
-	            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 	    		System.out.println(core.getWinner().getName() + " Winner ");
 	    		System.out.println("Reset");
 	    		core.reset();
@@ -171,6 +206,8 @@ private static final int PADDING = 5;
 	    		initEHButton();
 	    		if(core.P1.isMyTurn())
 	    		{
+	    			
+	    			
 	    			if(core.getCardChanged())
 	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
 	    			else
@@ -178,22 +215,35 @@ private static final int PADDING = 5;
 
 	    		}
 	    	}
+	    	if(core.getPlayer(1).isMyTurn())
+			{
+				Nord.setBackground(Color.green);
+				South.setBackground(Color.red);
+			}
+			else
+			{
+				Nord.setBackground(Color.red);
+				South.setBackground(Color.green);
+			}
 		}
 		else if(d.getMossa() == 2)
 		{
 			//Check/Call
-	    	System.out.println("click");
+	    	//System.out.println("click");
 	    	if(core.getPlayer(1).isMyTurn())
 	    	{
-	    		System.out.println("my turn");
 	    		if(core.getPot().getBet() > 0 && core.getPot().getBet() == d.getBet())
 	        	{
 	        		//check
 	        		core.call(P1);
+	    			System.out.println("AI CALL");
+
 	        	}
 	    		else if(core.getPot().getBet() == 0 && core.getPot().getBet() == d.getBet())
 	    		{
 	    			core.check(P1);
+	    			System.out.println("AI CHECK");
+
 	    		}
 	    		
 	    		if(core.getTurn() == core.getTurn().DISCARDCARD)
@@ -210,7 +260,7 @@ private static final int PADDING = 5;
 	    	}
 	    	if(core.getFineHand())
 	    	{
-	            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 	    		System.out.println(core.getWinner().getName() + " Winner ");
 	    		System.out.println("Reset");
 	    		core.reset();
@@ -220,6 +270,8 @@ private static final int PADDING = 5;
 	    		initEHButton();
 	    		if(core.P1.isMyTurn())
 	    		{
+	    			
+	    			
 	    			if(core.getCardChanged())
 	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
 	    			else
@@ -227,23 +279,42 @@ private static final int PADDING = 5;
 
 	    		}
 	    	}
+	    	if(core.getPlayer(1).isMyTurn())
+			{
+				Nord.setBackground(Color.green);
+				South.setBackground(Color.red);
+			}
+			else
+			{
+				Nord.setBackground(Color.red);
+				South.setBackground(Color.green);
+			}
 		}
 		else if(d.getMossa() == 3)
 		{
 			if(core.getPlayer(1).isMyTurn())
 	    	{
-	    		System.out.println("my turn");
+	    		System.out.println("AI RAISE");
 	    		float bet = Float.parseFloat(betValue.getValue().toString());
 	    		if(bet > 0)
 	        	{
-	        		//call
-	        		if(!core.raise(P1, bet))
-			            JOptionPane.showMessageDialog(null, "Il tuo stack è inferiore alla tua puntata", "Error", JOptionPane.INFORMATION_MESSAGE);
-	        		else
-	        		{
-		    			buttonP2.get(0).setText("Call " + core.getPot().getBet());
-
-	        		}
+	    			
+	    			if(bet < core.getPlayer(1).getStack().getStack())
+	    			{
+	    			
+		        		//call
+		        		if(!core.raise(P1, bet))
+				            JOptionPane.showMessageDialog(null, "Il tuo stack è inferiore alla tua puntata", "Error", JOptionPane.INFORMATION_MESSAGE);
+		        		else
+		        		{
+			    			buttonP2.get(0).setText("Call " + core.getPot().getBet());
+	
+		        		}
+	    			}
+	    			else
+	    			{
+	    				core.call(P1);
+	    			}
 	        	}
 	    		updateText();
 	    		if(core.getFineHand())
@@ -259,6 +330,7 @@ private static final int PADDING = 5;
 		    		initEHButton();
 		    		if(core.P1.isMyTurn())
 		    		{
+		    			
 		    			if(core.getCardChanged())
 		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
 		    			else
@@ -266,6 +338,16 @@ private static final int PADDING = 5;
 
 		    		}
 		    	}
+	    		if(core.getPlayer(1).isMyTurn())
+    			{
+    				Nord.setBackground(Color.green);
+    				South.setBackground(Color.red);
+    			}
+    			else
+    			{
+    				Nord.setBackground(Color.red);
+    				South.setBackground(Color.green);
+    			}
 	    	}
 		}
 		
@@ -276,7 +358,7 @@ private static final int PADDING = 5;
 		//BACKUP TOGLIERE IF 
 		if(core.getGameWinner() == null)
 		{
-			System.out.println(core.getPlayer(2).getStack().getStack());
+			//System.out.println(core.getPlayer(2).getStack().getStack());
 			cardP2 = new ArrayList<JLabel>();
 			buttonP1 = new ArrayList<JButton>();
 			buttonP2 = new ArrayList<JButton>();
@@ -344,6 +426,8 @@ private static final int PADDING = 5;
 			obj.setName("StackValueP1");
 			obj.setText(String.valueOf(core.getPlayer(1).getStack().getStack()));
 			Nord.add(obj);
+			
+			
 			
 			JButton CheckCallP1 = new JButton("Check");  
 		    CheckCallP1.setName("CheckCallP1");
@@ -433,6 +517,7 @@ private static final int PADDING = 5;
 			South.add(obj);
 			
 			
+			
 			obj = new JLabel();
 			obj.setName("StackValueP2");
 			obj.setText(String.valueOf(core.getPlayer(2).getStack().getStack()));
@@ -490,6 +575,16 @@ private static final int PADDING = 5;
 	        
 		    South.add(Buttons);
 		    
+		    if(core.getPlayer(1).isMyTurn())
+			{
+				Nord.setBackground(Color.green);
+				South.setBackground(Color.red);
+			}
+			else
+			{
+				Nord.setBackground(Color.red);
+				South.setBackground(Color.green);
+			}
 		    
 		    
 			obj = new JLabel();
@@ -531,15 +626,16 @@ private static final int PADDING = 5;
 			obj.setText(String.valueOf(core.getPot().getPot()));
 			Center.add(obj);
 			
-			System.out.println(P1.getActualHand().getScore());
-			System.out.println(P1.getActualHand().highCard());
+			//System.out.println(P1.getActualHand().getScore());
+			//System.out.println(P1.getActualHand().highCard());
 	
+			/*
 			if(P1.getActualHand().fullHouse() != null)
 				System.out.println(P1.getActualHand().fullHouse().get(0) + " - " + P1.getActualHand().fullHouse().get(1));
 			System.out.println(P2.getActualHand().getScore());
 			if(P2.getActualHand().fullHouse() != null)
 				System.out.println(P2.getActualHand().fullHouse().get(0) + " - " + P2.getActualHand().fullHouse().get(1));
-			
+			*/
 			revalidate();
 			repaint();
 		}
@@ -575,7 +671,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card0"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(0).toString());
@@ -593,7 +689,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card0"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(0).toString());
@@ -625,7 +721,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card1"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(1).toString());
@@ -643,7 +739,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card1"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(1).toString());
@@ -672,7 +768,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card2"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(2).toString());
@@ -690,7 +786,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card2"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(2).toString());
@@ -719,7 +815,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card3"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(3).toString());
@@ -737,7 +833,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card3"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(3).toString());
@@ -765,7 +861,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card4"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(4).toString());
@@ -783,7 +879,7 @@ private static final int PADDING = 5;
 		    			for (Component jc : South.getComponents()) {
 				            if (jc instanceof JLabel) {
 				                JLabel label = (JLabel) jc;
-				                System.out.println(label.getName());
+				                //System.out.println(label.getName());
 				                if(label.getName().equals("Card4"))
 				                {
 				                	Image img = M.getCard(core.getPlayer(2).getActualHand().getCards().get(4).toString());
@@ -853,7 +949,7 @@ private static final int PADDING = 5;
 		    {  		       
 		    	//SelectedCard = 1;
 		    	//Check/Call
-		    	System.out.println("click");
+		    	//System.out.println("click");
 		    	if(buttonP2.get(0).getText().equals("Scarta"))
 		    	{
 		    		Collections.sort(selectedCard); 
@@ -884,8 +980,34 @@ private static final int PADDING = 5;
 		    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
 		    		initEHButton();
 		    		
+		    		if(core.isAllIn())
+		    		{
+		    			core.nextTurn();
+		    			if(core.getFineHand())
+				    	{
+				            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+				           
+			    			System.out.println(core.getWinner().getName() + " Winner ");
+				    		System.out.println("Reset");
+				    		core.reset();
+				    		initGUI();
+				    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
+				    		initEHCard();
+				    		initEHButton();
+				    	}
+		    		}
 		    		if(core.P1.isMyTurn() && core.getTurn() != core.getTurn().DISCARDCARD )
 		    		{
+		    			if(core.getPlayer(1).isMyTurn())
+		    			{
+		    				Nord.setBackground(Color.green);
+		    				South.setBackground(Color.red);
+		    			}
+		    			else
+		    			{
+		    				Nord.setBackground(Color.red);
+		    				South.setBackground(Color.green);
+		    			}
 		    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
 		    			if(core.getCardChanged())
 		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
@@ -926,7 +1048,7 @@ private static final int PADDING = 5;
 				    	{
 				            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 				           
-			    			System.out.println(core.getWinner().getName() + " Winner ");
+			    			//System.out.println(core.getWinner().getName() + " Winner ");
 				    		System.out.println("Reset");
 				    		core.reset();
 				    		initGUI();
@@ -937,6 +1059,16 @@ private static final int PADDING = 5;
 			    		
 			    		if(core.P1.isMyTurn() && core.getTurn() != core.getTurn().DISCARDCARD && !core.getFineHand())
 			    		{
+			    			if(core.getPlayer(1).isMyTurn())
+			    			{
+			    				Nord.setBackground(Color.green);
+			    				South.setBackground(Color.red);
+			    			}
+			    			else
+			    			{
+			    				Nord.setBackground(Color.red);
+			    				South.setBackground(Color.green);
+			    			}
 			    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
 			    			if(core.getCardChanged())
 			    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
@@ -982,6 +1114,16 @@ private static final int PADDING = 5;
 			    	}
 		    		if(core.P1.isMyTurn() && !core.getFineHand())
 		    		{
+		    			if(core.getPlayer(1).isMyTurn())
+		    			{
+		    				Nord.setBackground(Color.green);
+		    				South.setBackground(Color.red);
+		    			}
+		    			else
+		    			{
+		    				Nord.setBackground(Color.red);
+		    				South.setBackground(Color.green);
+		    			}
 		    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
 		    			if(core.getCardChanged())
 		    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));
@@ -1000,6 +1142,8 @@ private static final int PADDING = 5;
 		    {  		       
 		    	//SelectedCard = 1;
 		    	//Fold
+				System.out.println("FOLD PLAYER");
+
 		    	core.fold(P2);
 		    	if(core.getFineHand())
 		    	{
@@ -1014,9 +1158,19 @@ private static final int PADDING = 5;
 		    		initEHCard();
 		    		initEHButton();
 		    	}
-		    	System.out.println("FOLD");
+		    	//System.out.println("FOLD");
 		    	if(core.P1.isMyTurn())
 	    		{
+		    		if(core.getPlayer(1).isMyTurn())
+	    			{
+	    				Nord.setBackground(Color.green);
+	    				South.setBackground(Color.red);
+	    			}
+	    			else
+	    			{
+	    				Nord.setBackground(Color.red);
+	    				South.setBackground(Color.green);
+	    			}
 	    			//Decision d = core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(0));
 	    			if(core.getCardChanged())
 	    				DoMovesAI(core.getAIcore().getFinalDecision(core.P1.getActualHand(), core.P1.getStack(), core.getPot(), new cardChanged(1)));

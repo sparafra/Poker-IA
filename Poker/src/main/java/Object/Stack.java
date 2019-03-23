@@ -31,17 +31,18 @@ public class Stack {
 	public void sumToStack(float val) 
 	{
 		this.stack += val;
-		this.stackInt = (int) (stack*100);
+		this.stackInt += (int) (val*100);
 
 	}
 	public void takeByStack(float val) 
 	{
 		this.stack -= val;
-		this.stackInt = (int) (stack*100);
+		this.stackInt -= (int) (val*100);
 
 	}
 	public void setStackInt(int stackInt) {
 		this.stackInt = stackInt;
+		this.stack = stackInt/100;
 	}
 	
 }

@@ -30,7 +30,7 @@ public class Core {
 	boolean firstCall;
 	boolean cardChanged;
 	AIcore AI;
-	
+	boolean allIn;
 	public Core(Player P1, Player P2)
 	{
 		this.P1 = P1;
@@ -40,12 +40,15 @@ public class Core {
 		fineHand=false;
 		firstCall = true;
 		cardChanged = false;
+		allIn = false;
 		turn = Turn.FIRSTBET;
 	}
 	public void shuffleDeck()
 	{
 		deck = new Deck();
 	}
+	public boolean isAllIn() {return allIn;}
+	
 	public Turn getTurn() {return turn;}
 	public void nextTurn() {turn = turn.next();}
 	public void check(Player P)
@@ -233,7 +236,7 @@ public class Core {
 				P1.getStack().takeByStack(pot.getBet());
 				pot.add(pot.getBet()*2);
 				pot.setBet(0);
-				
+				allIn = true;
 			}
 			else
 			{
@@ -275,6 +278,7 @@ public class Core {
 				P2.getStack().takeByStack(pot.getBet());
 				pot.add(pot.getBet()*2);
 				pot.setBet(0);
+				allIn = true;
 			}
 			else
 			{
@@ -333,6 +337,32 @@ public class Core {
 				P1.setMyTurn(false);
 				return true;
 			}
+			else if(P1.getStack().getStack() < bet)
+			{
+				allIn = true;
+				bet = P1.getStack().getStack();
+				if(pot.getBet() > 0)
+				{
+					if(pot.getBet() > bet)
+					{
+						P2.getStack().sumToStack(pot.getBet() - bet);
+						pot.add(bet);
+						P1.getStack().takeByStack(bet);
+						
+					}
+					else
+					{
+						P1.getStack().takeByStack(bet);
+		    			pot.setBet(bet);
+					}
+				}
+				else
+				{
+					P1.getStack().takeByStack(bet);
+	    			pot.setBet(bet);
+				}
+				return true;
+			}
 			else
 				return false;
 			
@@ -360,6 +390,32 @@ public class Core {
 				P2.setMyTurn(false);
 				return true;
 			}
+			else if(P2.getStack().getStack() < bet)
+			{
+				allIn = true;
+				bet = P2.getStack().getStack();
+				if(pot.getBet() > 0)
+				{
+					if(pot.getBet() > bet)
+					{
+						P1.getStack().sumToStack(pot.getBet() - bet);
+						pot.add(bet);
+						P2.getStack().takeByStack(bet);
+						
+					}
+					else
+					{
+						P2.getStack().takeByStack(bet);
+		    			pot.setBet(bet);
+					}
+				}
+				else
+				{
+					P2.getStack().takeByStack(bet);
+	    			pot.setBet(bet);
+				}
+				return true;
+			}
 			else
 				return false;
 			
@@ -370,15 +426,22 @@ public class Core {
 	public void fold(Player P)
 	{
 		fineHand = true;
+		System.out.println("Prima P1: "+P1.getStack().getStack());
+		System.out.println("Prima P2: "+P2.getStack().getStack());
+		System.out.println("Pot: " +pot.getPot());
+		System.out.println("Bet: "+pot.getBet());
+
 		if(P == P1 && P1.isMyTurn())
 		{
-			P2.getStack().sumToStack(pot.getPot()+pot.getBet());
+			P2.getStack().sumToStack(pot.getPot());
 		}
 		else if(P == P2 && P2.isMyTurn())
 		{
-			P1.getStack().sumToStack(pot.getPot()+pot.getBet());
+			P1.getStack().sumToStack(pot.getPot());
 		}
-		
+		System.out.println(P1.getStack().getStack());
+		System.out.println(P2.getStack().getStack());
+
 	}
 	public Card drawCard(){
 		return deck.getCard();
@@ -445,7 +508,7 @@ public class Core {
 		turn = Turn.FIRSTBET;
 		firstCall = true;
 		//pot.setPot(smallBlind+bigBlind);
-		
+		allIn = false;
 		AI = new AIcore();
 		//Decision d = AI.getFinalDecision(P1.getActualHand(), P1.getStack(), pot, new cardChanged(0));
 		//System.out.println(d.toString());
@@ -511,7 +574,7 @@ public class Core {
 		System.out.println(pot.getPot());
 		turn = Turn.FIRSTBET;
 		firstCall = true;
-
+		allIn = false;
 		//pot.setPot(smallBlind+bigBlind);
 	}
 	
