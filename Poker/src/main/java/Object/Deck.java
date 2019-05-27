@@ -20,12 +20,15 @@ public class Deck {
 		Suites.add("SPADES");
 		Suites.add("DIAMONDS");
 		
+		//Choose SIZE of DECK
+		/*
 		Faces.add(2);
 		Faces.add(3);
 		Faces.add(4);
 		Faces.add(5);
 		Faces.add(6);
 		Faces.add(7);
+		*/
 		Faces.add(8);
 		Faces.add(9);
 		Faces.add(10);

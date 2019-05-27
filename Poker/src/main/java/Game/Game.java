@@ -19,7 +19,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSpinner;
+import javax.swing.JTextArea;
+import javax.swing.JTextField;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 
@@ -33,6 +36,8 @@ public class Game extends JFrame{
 
 private static final int PADDING = 5;
 	
+private final static String newline = "\n";
+
 	Toolkit tk;
 	Core core;
 	Player P1;
@@ -49,6 +54,11 @@ private static final int PADDING = 5;
 	ArrayList<JLabel> cardP2;
 	ArrayList<JButton> buttonP2;
 	JSpinner betValue;
+	
+	JTextArea History;
+	JButton Debug;
+	
+	boolean DebugMode; 
 	
 	ArrayList<Integer> selectedCard;
 	
@@ -70,6 +80,13 @@ private static final int PADDING = 5;
 		buttonP1 = new ArrayList<JButton>();
 		buttonP2 = new ArrayList<JButton>();
 		selectedCard = new ArrayList<Integer>();
+		
+		History = new JTextArea(5, 20);
+		JScrollPane scrollPane = new JScrollPane(History); 
+		History.setEditable(false);
+		History.setName("History");
+		
+		DebugMode = true;
 		
 		initGUI();
 		StartGame();
@@ -117,10 +134,16 @@ private static final int PADDING = 5;
 			e.printStackTrace();
 		}
 		System.out.println("Do AI MOVES: ");
-		
+		if(DebugMode)
+			History.append("-------- START HAND ------- " + core.P1.getActualHand().getCards().toString() + newline);
+		else
+			History.append("-------- START HAND ------- "+ newline);
+
 		if(d.getMossa() == 0)
 		{
 			core.fold(P1);
+			History.append("Fold" + newline);
+
 			System.out.println("AI FOLD");
 			if(core.getTurn() == core.getTurn().DISCARDCARD)
     		{
@@ -138,7 +161,7 @@ private static final int PADDING = 5;
 	    	if(core.getFineHand())
 	    	{
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
-	           
+	    		History.append("-------- FINE HAND -------" + newline);
 				System.out.println("Giocatore Winner ");
 	    		System.out.println("Reset");
 	    		core.reset();
@@ -178,6 +201,8 @@ private static final int PADDING = 5;
 	        	{
 	        		//check
 	        		core.check(P1);
+	    			History.append("CHECK" + newline);
+
 	    			System.out.println("AI CHECK");
 
 	        	}
@@ -196,6 +221,8 @@ private static final int PADDING = 5;
 	    	}
 	    	if(core.getFineHand())
 	    	{
+	    		History.append("-------- FINE HAND -------" + newline);
+
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 	    		System.out.println(core.getWinner().getName() + " Winner ");
 	    		System.out.println("Reset");
@@ -236,12 +263,16 @@ private static final int PADDING = 5;
 	        	{
 	        		//check
 	        		core.call(P1);
+	    			History.append("CALL" + newline);
+
 	    			System.out.println("AI CALL");
 
 	        	}
 	    		else if(core.getPot().getBet() == 0 && core.getPot().getBet() == d.getBet())
 	    		{
 	    			core.check(P1);
+	    			History.append("CHECK" + newline);
+
 	    			System.out.println("AI CHECK");
 
 	    		}
@@ -260,6 +291,8 @@ private static final int PADDING = 5;
 	    	}
 	    	if(core.getFineHand())
 	    	{
+	    		History.append("-------- FINE HAND -------" + newline);
+
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 	    		System.out.println(core.getWinner().getName() + " Winner ");
 	    		System.out.println("Reset");
@@ -295,6 +328,8 @@ private static final int PADDING = 5;
 			if(core.getPlayer(1).isMyTurn())
 	    	{
 	    		System.out.println("AI RAISE");
+				
+
 	    		float bet = Float.parseFloat(betValue.getValue().toString());
 	    		if(bet > 0)
 	        	{
@@ -308,19 +343,21 @@ private static final int PADDING = 5;
 		        		else
 		        		{
 			    			buttonP2.get(0).setText("Call " + core.getPot().getBet());
-	
+			    			History.append("RAISE" + newline);
 		        		}
 	    			}
 	    			else
 	    			{
 	    				core.call(P1);
+	    				History.append("CALL / ALLIN" + newline);
 	    			}
 	        	}
 	    		updateText();
 	    		if(core.getFineHand())
 		    	{
 		            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
-		           
+		    		History.append("-------- FINE HAND -------" + newline);
+
 	    			System.out.println(core.getWinner().getName() + " Winner ");
 		    		System.out.println("Reset");
 		    		core.reset();
@@ -366,6 +403,9 @@ private static final int PADDING = 5;
 			
 			tk = Toolkit.getDefaultToolkit();
 			
+			
+			Nord.add(History);
+			
 			JLabel obj;
 			Image img;
 			ImageIcon imgI;
@@ -391,7 +431,10 @@ private static final int PADDING = 5;
 				//System.out.println(core.getPlayer(1).getActualHand().getCards().get(k).toString());
 	
 				//System.out.println(M.getCard(core.getPlayer(1).getActualHand().getCards().get(k).toString()));
-				img = M.getCard(core.getPlayer(1).getActualHand().getCards().get(k).toString());
+				if(DebugMode)
+					img = M.getCard(core.getPlayer(1).getActualHand().getCards().get(k).toString());
+				else
+					img = M.getBackCard(1);
 				img = img.getScaledInstance(100, 130, Image.SCALE_SMOOTH);
 				imgI = new ImageIcon(img);
 				obj.setIcon(imgI);
@@ -465,7 +508,13 @@ private static final int PADDING = 5;
 			
 	        Nord.add(ButtonsP1);
 			
+	        if(DebugMode)
+	        	Debug = new JButton("DEBUG ON");
+	        else
+	        	Debug = new JButton("DEBUG OFF");
 	        
+	        
+	        South.add(Debug);
 	        if(core.getPlayer(2).isDealer())
 			{
 				obj = new JLabel();
@@ -898,6 +947,26 @@ private static final int PADDING = 5;
 	}
 	public void initEHButton()
 	{
+		Debug.addMouseListener(new MouseAdapter()  
+		{  
+		    public void mouseClicked(MouseEvent e)  
+		    {  		       
+		    	if(DebugMode)
+		    	{
+			    	DebugMode = false;
+			    	Debug.setText("DEBUG OFF");
+		    	}
+		    	else
+		    	{
+		    		DebugMode = true;
+			    	Debug.setText("DEBUG ON");
+		    	}
+		    	initGUI();
+	    		drawPlayerCard(core.getPlayer(1), core.getPlayer(2));
+	    		initEHCard();
+	    		initEHButton();
+		    }  
+		});
 		buttonP1.get(0).addMouseListener(new MouseAdapter()  
 		{  
 		    public void mouseClicked(MouseEvent e)  
