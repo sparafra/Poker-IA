@@ -135,7 +135,7 @@ private final static String newline = "\n";
 		}
 		System.out.println("Do AI MOVES: ");
 		if(DebugMode)
-			History.append("-------- START HAND ------- " + core.P1.getActualHand().getCards().toString() + newline);
+			History.append("-------- START HAND ------- " + newline + core.P1.getActualHand().getCards().toString() + newline);
 		else
 			History.append("-------- START HAND ------- "+ newline);
 
@@ -161,6 +161,7 @@ private final static String newline = "\n";
 	    	if(core.getFineHand())
 	    	{
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+	    		History.append("Giocatore Vince La Mano" + newline);
 	    		History.append("-------- FINE HAND -------" + newline);
 				System.out.println("Giocatore Winner ");
 	    		System.out.println("Reset");
@@ -221,6 +222,7 @@ private final static String newline = "\n";
 	    	}
 	    	if(core.getFineHand())
 	    	{
+	    		History.append(core.getWinner().getName() + " Vince La Mano ");
 	    		History.append("-------- FINE HAND -------" + newline);
 
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
@@ -291,6 +293,7 @@ private final static String newline = "\n";
 	    	}
 	    	if(core.getFineHand())
 	    	{
+	    		History.append(core.getWinner().getName() + " Vince La Mano ");
 	    		History.append("-------- FINE HAND -------" + newline);
 
 	            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
@@ -356,6 +359,7 @@ private final static String newline = "\n";
 	    		if(core.getFineHand())
 		    	{
 		            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
+		            History.append(core.getWinner().getName() + " Vince La Mano ");
 		    		History.append("-------- FINE HAND -------" + newline);
 
 	    			System.out.println(core.getWinner().getName() + " Winner ");
@@ -403,8 +407,8 @@ private final static String newline = "\n";
 			
 			tk = Toolkit.getDefaultToolkit();
 			
-			
-			Nord.add(History);
+			if(DebugMode)
+				Nord.add(History);
 			
 			JLabel obj;
 			Image img;
@@ -1001,6 +1005,7 @@ private final static String newline = "\n";
 		    	}
 		    	if(core.getFineHand())
 		    	{
+		    		History.append(core.getWinner().getName() + " Vince La Mano ");
 		            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
 		    		System.out.println(core.getWinner().getName() + " Winner ");
 		    		System.out.println("Reset");
@@ -1055,7 +1060,7 @@ private final static String newline = "\n";
 		    			if(core.getFineHand())
 				    	{
 				            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
-				           
+				            History.append(core.getWinner().getName() + " Vince La Mano ");
 			    			System.out.println(core.getWinner().getName() + " Winner ");
 				    		System.out.println("Reset");
 				    		core.reset();
@@ -1116,7 +1121,7 @@ private final static String newline = "\n";
 			    		if(core.getFineHand())
 				    	{
 				            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
-				           
+				            History.append(core.getWinner().getName() + " Vince La Mano ");
 			    			//System.out.println(core.getWinner().getName() + " Winner ");
 				    		System.out.println("Reset");
 				    		core.reset();
@@ -1172,7 +1177,7 @@ private final static String newline = "\n";
 		    		if(core.getFineHand())
 			    	{
 			            JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
-			           
+			            History.append(core.getWinner().getName() + " Vince La Mano ");
 		    			System.out.println(core.getWinner().getName() + " Winner ");
 			    		System.out.println("Reset");
 			    		core.reset();
@@ -1217,7 +1222,7 @@ private final static String newline = "\n";
 		    	if(core.getFineHand())
 		    	{
 		            //JOptionPane.showMessageDialog(null, core.getWinner().getName(), "Winner ", JOptionPane.INFORMATION_MESSAGE);
-		           
+		    		History.append(core.getWinner().getName() + " Vince La Mano ");
 	    			System.out.println("AI Winner ");
 		    		System.out.println("Reset");
 		    		core.reset();
